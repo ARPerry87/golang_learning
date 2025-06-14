@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // Create a new type of 'deck'
 // which is a slice of strings
@@ -31,6 +34,10 @@ func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:] // we want to return first the slice from the start until the hand size then the handize until the end
 }
 
+func (d deck) toString() string {
+	return strings.Join([]string(d), ",")
+}
+
 // we used a receiver argument, which is what is before the print()
 // by putting what's called a receiver argument in the function
 // A receiver argument essentially allows any variable of type 'deck'
@@ -46,3 +53,18 @@ func deal(d deck, handSize int) (deck, deck) {
 // fruits= []string{"Apple", "Banana", "Orange", "Pear"}
 // fmt.Println(fruits[1:3]) // prints [Banana Orange] - this means it's start inclusive, but up to and not including the end index
 // We can also leave out the start or end indexes if we want it to go from the start or until the end
+
+// whenever we start using things that are going to interact with the computers systems or operations we want to use GoLang's built-in packages
+// Which we will do for saveToFile and loadFromFile
+// so we'd want to go to the GoLang documentation and find the package we want to use
+// in this case we'd want to use func WriteFile(filename string, data []byte, perm os.FileMode) error
+// and func ReadFile(filename string) ([]byte, error)
+// []byte is a slice of bytes, which is what we want to use to write to a file
+// byte slices are used often in GoLang to represent data that is not a string
+// A byte slice is a slice of bytes, which is to say that if we have a string "Hi there!"
+// it would be represented as a slice of bytes like this: []byte{72, 105, 32, 116, 104, 101, 114, 101, 33}
+// each letter corresponds to a number in the ASCII table
+// so the first letter 'H' is 72, 'i' is 105, and so on
+
+// we're going to use type conversion to convert the deck type to a byte slice
+// []byte("Hi there!") is a byte slice that represents the string "Hi there!"
