@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -38,6 +39,22 @@ func (d deck) toString() string {
 	return strings.Join([]string(d), ",")
 }
 
+func (d deck) saveToFile(filename string) error {
+	// save the deck to the hard drive
+	return os.WriteFile(filename, []byte(d.toString()), 0666)
+}
+
+func newDeckFromFile(filename string) (deck, error) {
+	bs, err := os.ReadFile(filename)
+	if err != nil {
+		fmt.Println("Error: ", err) // if there is an error, we don't want the byteslice and just give us the error
+		os.Exit(1)                  // we want to exit the program with a non-zero exit code
+	}
+
+	s := strings.Split(string(bs), ",") // we want to convert the byte slice to a string, then split it by the comma
+	return deck(s), nil // we want to return a deck type, which is a slice of strings, and a nil error
+}
+
 // we used a receiver argument, which is what is before the print()
 // by putting what's called a receiver argument in the function
 // A receiver argument essentially allows any variable of type 'deck'
@@ -68,3 +85,6 @@ func (d deck) toString() string {
 
 // we're going to use type conversion to convert the deck type to a byte slice
 // []byte("Hi there!") is a byte slice that represents the string "Hi there!"
+
+// We pass the error object because we want to know if the error has a value set or if its nil
+// if there's a nil we can ignore that object, if it's not we want to know what the error is for newDeckFromFile
