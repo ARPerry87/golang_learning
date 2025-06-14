@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"math/rand"
 )
 
 // Create a new type of 'deck'
@@ -53,6 +54,14 @@ func newDeckFromFile(filename string) (deck, error) {
 
 	s := strings.Split(string(bs), ",") // we want to convert the byte slice to a string, then split it by the comma
 	return deck(s), nil // we want to return a deck type, which is a slice of strings, and a nil error
+}
+
+func (d deck) shuffle() {
+	for i := range d {
+		newPosition := rand.Intn(len(d) - 1) // we want to use the length of the deck - 1 because we want to not include the current index
+		d[i], d[newPosition] = d[newPosition], d[i] // swap the cards at the current index and the new position
+	}
+	// we use rand.Intn to get a random number between 0 and the length of the deck minus 1
 }
 
 // we used a receiver argument, which is what is before the print()
