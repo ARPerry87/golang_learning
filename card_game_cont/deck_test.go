@@ -55,3 +55,17 @@ func TestSaveToDeckAndNewDeckFromFile(t *testing.T) {
 		t.Errorf("Error removing test file: %v", err)
 	}
 }
+
+func TestDeal(t *testing.T) {
+	d := newDeck()
+	handSize := 5
+	hand, remainingDeck := deal(d, handSize)
+
+	if len(hand) != handSize {
+		t.Errorf("Expected hand size of %d, but got %d", handSize, len(hand))
+	}
+
+	if len(remainingDeck) != len(d)-handSize {
+		t.Errorf("Expected remaining deck size of %d, but got %d", len(d)-handSize, len(remainingDeck))
+	}
+}
